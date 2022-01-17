@@ -1,0 +1,81 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cvt="clr-namespace:MahiruLauncher.Converter"
+        xmlns:dm="clr-namespace:MahiruLauncher.DataModel;assembly=MahiruLauncher.DataModel"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="1000"
+        Width="500" Height="1000" MinHeight="500"
+        x:Class="MahiruLauncher.Views.ScriptEditorWindow"
+        FontFamily="Microsoft YaHei,Simsun,苹方-简,宋体-简"
+        Title="Script Editor">
+    <Window.DataContext>
+        <dm:Script/>
+    </Window.DataContext>
+    <Window.Resources>
+        <cvt:Boolean2Reverse x:Key="Boolean2Reverse"/>
+    </Window.Resources>
+    <ScrollViewer Margin="20">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontSize="30" Text="Edit script  "/>
+                <TextBlock FontSize="20" Foreground="Gray" VerticalAlignment="Center" Text="{Binding Identifier}"/>
+            </StackPanel>
+            <StackPanel Margin="20">
+                <TextBlock FontSize="20" Margin="0 0 0 10">Name</TextBlock>
+                <TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding Name, Mode=TwoWay}"/>
+                <TextBlock FontSize="20" Margin="0 0 0 10">Description</TextBlock>
+                <TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding Description, Mode=TwoWay}"/>
+                <TextBlock FontSize="20" Margin="0 0 0 10">Process Name</TextBlock>
+                <TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding ProcessName, Mode=TwoWay}"/>
+                <!--TODO: 这里增加按钮来选择文件夹-->
+                <TextBlock FontSize="20" Margin="0 0 0 10">Working Directory</TextBlock>
+                <TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding WorkingDirectory, Mode=TwoWay}"/>
+                <CheckBox FontSize="20" Margin="0 0 0 10" IsChecked="{Binding RedirectStreams}" Checked="RedirectStreamChecked">Redirect Stream to File</CheckBox>
+                <CheckBox FontSize="20" Margin="0 0 0 10" IsChecked="{Binding UseShellExecute}" 
+                          IsEnabled="{Binding RedirectStreams, Converter={StaticResource Boolean2Reverse}}">Use Shell Execute</CheckBox>
+                <CheckBox FontSize="20" Margin="0 0 0 10" IsChecked="{Binding CreateNoWindow}">Create No Window</CheckBox>
+                <CheckBox FontSize="20" Margin="0 0 0 20" IsChecked="{Binding StartWhenAppStarts}">Starts When App Starts</CheckBox>
+                <TextBlock FontSize="20" Margin="0 0 0 10">Default Argument List</TextBlock>
+                <DataGrid Margin="0 0 0 20" x:Name="ArgumentDataGrid" Items="{Binding DefaultArguments}" CanUserSortColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name / Variable" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Value" Binding="{Binding Value}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Grid ColumnDefinitions="*,1,*,1,Auto" Margin="0 0 0 1">
+                    <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
+                        <TextBlock FontSize="16" Margin="5" HorizontalAlignment="Center">Name / VAR</TextBlock>
+                    </Border>
+                    <Border Grid.Column="2" BorderThickness="1" BorderBrush="Black">
+                        <TextBlock FontSize="16" Margin="5" HorizontalAlignment="Center">Value</TextBlock>
+                    </Border>
+                    <Button Grid.Column="4" Foreground="Red" Margin="2" Click="DeleteAllArguments">—</Button>
+                </Grid>
+                <ItemsControl Margin="0 0 0 10" Items="{Binding DefaultArguments}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,1,*,1,Auto" Margin="0 0 0 1">
+                                <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black">
+                                    <TextBox FontSize="16" Margin="5" Text="{Binding Name, Mode=TwoWay}"/>
+                                </Border>
+                                <Border Grid.Column="2" BorderThickness="1" BorderBrush="Black">
+                                    <TextBox FontSize="16" Margin="5" Text="{Binding Value, Mode=TwoWay}"/>
+                                </Border>
+                                <Button Grid.Column="4" Foreground="Red" Margin="2" Click="DeleteArgument">—</Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button HorizontalAlignment="Right" Margin="10" Click="AddArgument">Add Argument</Button>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

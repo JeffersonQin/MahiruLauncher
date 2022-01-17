@@ -1,0 +1,33 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MahiruLauncher.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
+        Width="500" Height="500" MinHeight="500"
+        x:Class="MahiruLauncher.Views.NewScriptWindow"
+        FontFamily="Microsoft YaHei,Simsun,苹方-简,宋体-简"
+        Title="New Script">
+    <Window.DataContext>
+        <vm:NewScriptViewModel/>
+    </Window.DataContext>
+    <StackPanel Margin="20">
+        <Grid RowDefinitions="*,Auto">
+            <StackPanel VerticalAlignment="Stretch">
+                <TextBlock FontSize="30">Add a new script</TextBlock>
+                <StackPanel Margin="20">
+                    <TextBlock FontSize="20" Margin="0 0 0 10">Name</TextBlock>
+                    <TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding Name, Mode=TwoWay}"/>
+                    <TextBlock FontSize="20" Margin="0 0 0 10">Identifier</TextBlock>
+                    <TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding Identifier, Mode=TwoWay}"/>
+                    <TextBlock FontSize="20" Margin="0 0 0 10">Description</TextBlock>
+                    <TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding Description, Mode=TwoWay}"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button FontSize="16" Margin="10" Click="CancelHandler">Cancel</Button>
+                <Button FontSize="16" Margin="10" Click="DoneHandler">Done</Button>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</Window>
