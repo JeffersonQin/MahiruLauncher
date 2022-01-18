@@ -86,8 +86,11 @@ namespace MahiruLauncher.Manager
             scriptTask.ErrorFilePath = Path.Join(DirectoryUtil.GetLogDirectory(),
                 script.Identifier + "-" + timestamp + "-error.log");
 
-            scriptTask.Process.StartInfo.RedirectStandardError = true;
-            scriptTask.Process.StartInfo.RedirectStandardOutput = true;
+            if (script.RedirectStreams)
+            {
+                scriptTask.Process.StartInfo.RedirectStandardError = true;
+                scriptTask.Process.StartInfo.RedirectStandardOutput = true;
+            }
 
             var stdoutWriter = MakeThread(() =>
             {
@@ -98,16 +101,24 @@ namespace MahiruLauncher.Manager
                 WriteStreamToFile(scriptTask.ErrorFilePath, scriptTask.Process.StandardError);
             }, "stderr-" + script.Identifier + "-" + timestamp);
             scriptTask.Process.Start();
-            stdoutWriter.Start();
-            stderrWriter.Start();
+
+            if (script.RedirectStreams)
+            {
+                stdoutWriter.Start();
+                stderrWriter.Start();
+            }
+
             scriptTask.Status = ScriptStatus.Running;
             MakeThread(() =>
             {
                 scriptTask.Process.WaitForExit();
                 if (scriptTask.Status == ScriptStatus.Running)
                     scriptTask.Status = ScriptStatus.Error;
-                stdoutWriter.Join();
-                stderrWriter.Join();
+                if (script.RedirectStreams)
+                {
+                    stdoutWriter.Join();
+                    stderrWriter.Join();
+                }
                 // TODO: Email
             }, "monitor-" + script.Identifier + "-" + timestamp).Start();
         }
