@@ -16,6 +16,8 @@ namespace MahiruLauncher.Views
 {
     public partial class MainWindow : Window
     {
+        private bool _exit = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,15 +41,39 @@ namespace MahiruLauncher.Views
             foreach (var script in ScriptManager.GetInstance().Scripts)
                 if (script.StartWhenAppStarts)
                     ScriptTaskManager.AddAndStartScriptTask(new ScriptTask(script));
+            
+            App.TrayIcon.IsVisible = true;
+            App.TrayIcon.ToolTipText = "MahiruLauncher";
+            App.TrayIcon.Menu = new NativeMenu();
+            var openingMenu = new NativeMenuItem("Open");
+            openingMenu.Click += (sender, args) =>
+            {
+                Show();
+                Activate();
+            };
+            var exitMenu = new NativeMenuItem("Exit");
+            exitMenu.Click += (sender, args) =>
+            {
+                MahiruServer.StopServer();
+                _exit = true;
+                foreach (var task in ScriptTaskManager.GetInstance().ScriptTasks)
+                    ScriptTaskManager.KillScriptTask(task);
+                Environment.Exit(0);
+            };
+            App.TrayIcon.Menu.Items.Add(openingMenu);
+            App.TrayIcon.Menu.Items.Add(new NativeMenuItemSeparator());
+            App.TrayIcon.Menu.Items.Add(exitMenu);
+
 #if DEBUG
             this.AttachDevTools();
 #endif
         }
         
-        protected override void OnClosed(EventArgs e)
+        protected override bool HandleClosing()
         {
-            MahiruServer.StopServer();
-            base.OnClosed(e);
+            if (_exit) return false;
+            Hide();
+            return true;
         }
 
         private void InitializeComponent()
