@@ -22,47 +22,48 @@ namespace MahiruLauncher.Views
             InitializeComponent();
             try
             {
+                // Start Server
+                MahiruServer.StartServer();
+
+                // Load scripts
                 var scriptsPath = Path.Join(DirectoryUtil.GetApplicationDirectory(), "scripts.xml");
                 ScriptManager.GetInstance().Scripts = Serializer.Load<ScriptManager>(scriptsPath).Scripts;
+
+                // Start auto-start tasks
+                foreach (var script in ScriptManager.GetInstance().Scripts)
+                    if (script.StartWhenAppStarts)
+                        ScriptTaskManager.AddAndStartScriptTask(new ScriptTask(script));
+            
+                // Init Tray
+                App.TrayIcon.IsVisible = true;
+                App.TrayIcon.ToolTipText = "MahiruLauncher";
+                App.TrayIcon.Menu = new NativeMenu();
+                var openingMenu = new NativeMenuItem("Open");
+                openingMenu.Click += (sender, args) =>
+                {
+                    Show();
+                    Activate();
+                };
+                var exitMenu = new NativeMenuItem("Exit");
+                exitMenu.Click += (sender, args) =>
+                {
+                    MahiruServer.StopServer();
+                    _exit = true;
+                    foreach (var task in ScriptTaskManager.GetInstance().ScriptTasks)
+                        ScriptTaskManager.KillScriptTask(task);
+                    Environment.Exit(0);
+                };
+                App.TrayIcon.Menu.Items.Add(openingMenu);
+                App.TrayIcon.Menu.Items.Add(new NativeMenuItemSeparator());
+                App.TrayIcon.Menu.Items.Add(exitMenu);
+
+                // Topmost setting
+                Topmost = Properties.Settings.Default.Topmost;
             }
             catch (Exception ex)
             {
-                var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                        ButtonDefinitions = ButtonEnum.Ok,
-                        ContentTitle = "Error",
-                        FontFamily = "Microsoft YaHei,Simsun,苹方-简,宋体-简",
-                        ContentMessage = ex.Message + "\n" + ex.StackTrace
-                    });
-                msBoxStandardWindow.Show();
+                ExceptionHandler.ShowExceptionMessage(ex);
             }
-
-            foreach (var script in ScriptManager.GetInstance().Scripts)
-                if (script.StartWhenAppStarts)
-                    ScriptTaskManager.AddAndStartScriptTask(new ScriptTask(script));
-            
-            App.TrayIcon.IsVisible = true;
-            App.TrayIcon.ToolTipText = "MahiruLauncher";
-            App.TrayIcon.Menu = new NativeMenu();
-            var openingMenu = new NativeMenuItem("Open");
-            openingMenu.Click += (sender, args) =>
-            {
-                Show();
-                Activate();
-            };
-            var exitMenu = new NativeMenuItem("Exit");
-            exitMenu.Click += (sender, args) =>
-            {
-                MahiruServer.StopServer();
-                _exit = true;
-                foreach (var task in ScriptTaskManager.GetInstance().ScriptTasks)
-                    ScriptTaskManager.KillScriptTask(task);
-                Environment.Exit(0);
-            };
-            App.TrayIcon.Menu.Items.Add(openingMenu);
-            App.TrayIcon.Menu.Items.Add(new NativeMenuItemSeparator());
-            App.TrayIcon.Menu.Items.Add(exitMenu);
-
 #if DEBUG
             this.AttachDevTools();
 #endif
@@ -78,7 +79,6 @@ namespace MahiruLauncher.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            MahiruServer.StartServer();
         }
 
         private void NewScriptHandler(object? sender, RoutedEventArgs e)
@@ -165,15 +165,25 @@ namespace MahiruLauncher.Views
             }
             catch (Exception ex)
             {
-                var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                        ButtonDefinitions = ButtonEnum.Ok,
-                        ContentTitle = "Error",
-                        FontFamily = "Microsoft YaHei,Simsun,苹方-简,宋体-简",
-                        ContentMessage = ex.Message + "\n" + ex.StackTrace
-                    });
-                msBoxStandardWindow.Show();
+                ExceptionHandler.ShowExceptionMessage(ex);
             }
+        }
+
+        private void SaveSettings(object? sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Properties.Settings.Default.Save();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.ShowExceptionMessage(ex);
+            }
+        }
+
+        private void SetTopmost(object? sender, RoutedEventArgs e)
+        {
+            Topmost = Properties.Settings.Default.Topmost;
         }
     }
 }

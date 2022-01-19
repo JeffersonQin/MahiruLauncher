@@ -11,7 +11,7 @@ namespace MahiruLauncher.Manager
 {
     public static class MahiruServer
     {
-        private static readonly WebServer Server = new WebServer(46357); // TODO: port写进settings
+        private static readonly WebServer Server = new(Properties.Settings.Default.MahiruServerPort);
 
         private static bool _startFlag = false;
         
