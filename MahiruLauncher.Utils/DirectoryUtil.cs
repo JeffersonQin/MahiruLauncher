@@ -20,10 +20,9 @@ namespace MahiruLauncher.Utils
             return IOUtils.EnsureDirectoryExist(Path.Join(GetApplicationDirectory(), "./Scripts"));
         }
         
-        public static string GetRealWorkingDirectory(string directory)
+        public static string GetRealWorkingDirectory(string directory, string defaultPath)
         {
             if (Path.IsPathRooted(directory)) return directory;
-            var defaultPath = ""; // TODO: settings 里面要写
             if (string.IsNullOrEmpty(defaultPath)) defaultPath = GetScriptDirectory();
             return Path.Join(defaultPath, directory);
         }

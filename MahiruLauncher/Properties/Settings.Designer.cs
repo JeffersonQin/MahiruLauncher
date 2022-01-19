@@ -130,5 +130,17 @@ namespace MahiruLauncher.Properties {
                 this["SmtpEnableSsl"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RelativeWorkingDirectory {
+            get {
+                return ((string)(this["RelativeWorkingDirectory"]));
+            }
+            set {
+                this["RelativeWorkingDirectory"] = value;
+            }
+        }
     }
 }

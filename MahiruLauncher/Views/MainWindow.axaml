@@ -80,6 +80,10 @@
 					<CheckBox FontSize="20" Margin="0 0 0 20" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=Topmost, Mode=TwoWay}" Click="SetTopmost">Stick on Top</CheckBox>
 					<TextBlock FontSize="20" Margin="0 0 0 10">Server Port</TextBlock>
 					<TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding Source={x:Static p:Settings.Default}, Path=MahiruServerPort, Mode=TwoWay}"/>
+					<TextBlock FontSize="20" Margin="0 0 0 10">Relative Working Directory</TextBlock>
+					<TextBlock FontSize="15" Margin="0 0 0 10" TextWrapping="Wrap" Foreground="Gray">When empty, set to %APPDATA%/MahiruLauncher by default.</TextBlock>
+					<TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding Source={x:Static p:Settings.Default}, Path=RelativeWorkingDirectory, Mode=TwoWay}"/>
+
 					<CheckBox FontSize="20" Margin="0 0 0 20" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=EmailNotification, Mode=TwoWay}">Email Notification When Task Failed</CheckBox>
 					<TextBlock FontSize="20" Margin="0 0 0 10">Email Address</TextBlock>
 					<TextBox FontSize="16" Margin="0 0 0 20" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=EmailNotification, Mode=TwoWay}" Text="{Binding Source={x:Static p:Settings.Default}, Path=EmailAddress, Mode=TwoWay}"/>
