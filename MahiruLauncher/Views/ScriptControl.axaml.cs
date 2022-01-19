@@ -9,6 +9,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using MahiruLauncher.DataModel;
 using MahiruLauncher.Manager;
+using MahiruLauncher.Utils;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 
@@ -29,26 +30,34 @@ namespace MahiruLauncher.Views
         
         private void Drop(object? sender, DragEventArgs e)
         {
-            if (DataContext is not Script script) return;
-            if (string.IsNullOrEmpty(script.DragAndDropField)) return;
-            var data = "";
-            if (e.Data.Contains(DataFormats.Text))
+            try
             {
-                data = e.Data.GetText();
-            } else if (e.Data.Contains(DataFormats.FileNames))
-            {
-                var files = e.Data.GetFileNames();
-                if (files == null) return;
-                var enumerable = files as string[] ?? files.ToArray();
-                if (!enumerable.Any()) return;
-                data = string.Join(" ", enumerable);
+                if (DataContext is not Script script) return;
+                if (string.IsNullOrEmpty(script.DragAndDropField)) return;
+                var data = "";
+                if (e.Data.Contains(DataFormats.Text))
+                {
+                    data = e.Data.GetText();
+                }
+                else if (e.Data.Contains(DataFormats.FileNames))
+                {
+                    var files = e.Data.GetFileNames();
+                    if (files == null) return;
+                    var enumerable = files as string[] ?? files.ToArray();
+                    if (!enumerable.Any()) return;
+                    data = string.Join(" ", enumerable);
+                }
+                else return;
+                if (data == "") return;
+                ScriptTaskManager.AddAndStartScriptTask(new ScriptTask(script, new List<ScriptArgument>()
+                {
+                    new(script.DragAndDropField, data)
+                }));
             }
-            else return;
-            if (data == "") return;
-            ScriptTaskManager.AddAndStartScriptTask(new ScriptTask(script, new List<ScriptArgument>()
+            catch (Exception ex)
             {
-                new(script.DragAndDropField, data)
-            }));
+                ExceptionHandler.ShowExceptionMessage(ex);
+            }
         }
 
         private void RunScript(object? sender, RoutedEventArgs e)
@@ -61,14 +70,7 @@ namespace MahiruLauncher.Views
             }
             catch (Exception ex)
             {
-                var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                        ButtonDefinitions = ButtonEnum.Ok,
-                        ContentTitle = "Error",
-                        FontFamily = "Microsoft YaHei,Simsun,苹方-简,宋体-简",
-                        ContentMessage = ex.Message + "\n" + ex.StackTrace
-                    });
-                msBoxStandardWindow.Show();
+                ExceptionHandler.ShowExceptionMessage(ex);
             }
         }
 
@@ -95,14 +97,7 @@ namespace MahiruLauncher.Views
             }
             catch (Exception ex)
             {
-                var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                        ButtonDefinitions = ButtonEnum.Ok,
-                        ContentTitle = "Error",
-                        FontFamily = "Microsoft YaHei,Simsun,苹方-简,宋体-简",
-                        ContentMessage = ex.Message + "\n" + ex.StackTrace
-                    });
-                msBoxStandardWindow.Show();
+                ExceptionHandler.ShowExceptionMessage(ex);
             }
         }
     }

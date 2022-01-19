@@ -48,17 +48,26 @@ namespace MahiruLauncher.Manager
 
         private static void WriteStreamToFile(string fileName, StreamReader stream)
         {
-            using (var writer = File.AppendText(fileName))
+            try
             {
-                writer.AutoFlush = true;
-                for (;;)
+                using (var writer = File.AppendText(fileName))
                 {
-                    var line = stream.ReadLineWithEnding();
-                    if (stream.EndOfStream) break;
-                    writer.Write(line);
-                    Debug.Write(line);
-                    // Debug.WriteLine(line);
+                    writer.AutoFlush = true;
+                    for (; ; )
+                    {
+                        var line = stream.ReadLineWithEnding();
+                        if (stream.EndOfStream) break;
+                        writer.Write(line);
+                        Debug.Write(line);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    ExceptionHandler.ShowExceptionMessage(e);
+                });
             }
         }
         
