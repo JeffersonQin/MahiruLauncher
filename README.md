@@ -27,6 +27,7 @@ Task 可以由 Script 点击 Run 直接新建并运行，也可以由发送 POST
 * Default Argument List 默认参数列表
   * Name / Var: 参数名称 / 描述，或者调用程序提供的变量 (如活动任务的 uuid)
   * Value: 参数值
+* Drag and Drop Argument Name: 将拖拽到 script 上的内容当作参数的参数名称（支持文本和文件列表）
 
 ### Task
 
@@ -95,11 +96,13 @@ Task 可以由 Script 点击 Run 直接新建并运行，也可以由发送 POST
 
 ## TODO
 
-- [ ] Drag & drop to run
+- [x] Drag & drop to run
+- [ ] Email notification when failed
 - [ ] Import xml file as script
 - [ ] Settings
 - [ ] Scheduler (cron)
 - [ ] Python library
+- [ ] Python script template
 
 ## Technology Used
 
