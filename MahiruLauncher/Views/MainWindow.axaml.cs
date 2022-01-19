@@ -39,6 +39,8 @@ namespace MahiruLauncher.Views
                 App.TrayIcon.IsVisible = true;
                 App.TrayIcon.ToolTipText = "MahiruLauncher";
                 App.TrayIcon.Menu = new NativeMenu();
+                App.TrayIcon.Icon = Icon;
+
                 var openingMenu = new NativeMenuItem("Open");
                 openingMenu.Click += (sender, args) =>
                 {
