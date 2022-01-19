@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Mail;
 using System.Text;
 using System.Threading;
+using Avalonia.Threading;
 using MahiruLauncher.DataModel;
 using MahiruLauncher.Mvvm;
 using MahiruLauncher.Utils;
@@ -121,15 +122,90 @@ namespace MahiruLauncher.Manager
             scriptTask.Status = ScriptStatus.Running;
             MakeThread(() =>
             {
-                scriptTask.Process.WaitForExit();
-                if (scriptTask.Status == ScriptStatus.Running)
-                    scriptTask.Status = ScriptStatus.Error;
-                if (script.RedirectStreams)
+                try
                 {
-                    stdoutWriter.Join();
-                    stderrWriter.Join();
+                    scriptTask.Process.WaitForExit();
+                    scriptTask.EndTime = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
+                    if (scriptTask.Status == ScriptStatus.Running)
+                        scriptTask.Status = ScriptStatus.Error;
+                    if (script.RedirectStreams)
+                    {
+                        stdoutWriter.Join();
+                        stderrWriter.Join();
+                    }
+
+                    if (scriptTask.Status != ScriptStatus.Error) return;
+
+                    var mySmtpClient = new SmtpClient(Properties.Settings.Default.SmtpHost);
+                    mySmtpClient.Port = Properties.Settings.Default.SmtpPort;
+
+                    // set smtp-client with basicAuthentication
+                    mySmtpClient.EnableSsl = Properties.Settings.Default.SmtpEnableSsl;
+                    mySmtpClient.UseDefaultCredentials = false;
+                    System.Net.NetworkCredential basicAuthenticationInfo = new
+                       System.Net.NetworkCredential(Properties.Settings.Default.SmtpUsername, Properties.Settings.Default.SmtpPassword);
+                    mySmtpClient.Credentials = basicAuthenticationInfo;
+                    mySmtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+                    // add from,to mailaddresses
+                    var mailAddress = new MailAddress(Properties.Settings.Default.EmailAddress);
+                    var myMail = new MailMessage();
+                    myMail.From = mailAddress;
+                    myMail.To.Add(Properties.Settings.Default.EmailAddress);
+                    myMail.Priority = MailPriority.Normal;
+
+                    // set subject and encoding
+                    myMail.Subject = "[MahiruLauncher] Error Occurred during Task Execution";
+                    myMail.SubjectEncoding = Encoding.UTF8;
+
+                    // set body-message and encoding
+                    var argumentString = "<ul>\n";
+                    foreach (var arg in scriptTask.ScriptArguments)
+                        argumentString += "<li>" + arg.Name + ": " + arg.Value + "</li>\n";
+                    argumentString += "</ul>";
+
+                    myMail.Body = string.Format(
+                        "<ul>\n" +
+                        "<li>Script Name:{0}</li>\n" +
+                        "<li>Script Description:{1}</li>\n" +
+                        "<li>Script Identifier:{2}</li>\n" +
+                        "<li>Task Identifier:{3}</li>\n" +
+                        "<li>Working Directory:{4}</li>\n" +
+                        "<li>Process Name:{5}</li>\n" +
+                        "<li>Start Time:{6}</li>\n" +
+                        "<li>End Time:{7}</li>\n" +
+                        "<li>Task Arguments:\n{8}</li>\n" +
+                        "</ul>\n" + 
+                        "<p>Output and error logs are attached if available.</p>", 
+                        script.Name, 
+                        script.Description, 
+                        script.Identifier, 
+                        scriptTask.TaskIdentifier, 
+                        script.WorkingDirectory,
+                        script.ProcessName,
+                        DateTimeOffset.FromUnixTimeMilliseconds(scriptTask.StartTime).ToString("s"),
+                        DateTimeOffset.FromUnixTimeMilliseconds(scriptTask.EndTime).ToString("s"),
+                        argumentString
+                    );
+                    myMail.BodyEncoding = Encoding.UTF8;
+                    // text or html
+                    myMail.IsBodyHtml = true;
+
+                    if (script.RedirectStreams)
+                    {
+                        myMail.Attachments.Add(new Attachment(scriptTask.OutputFilePath));
+                        myMail.Attachments.Add(new Attachment(scriptTask.ErrorFilePath));
+                    }
+
+                    mySmtpClient.Send(myMail);
                 }
-                // TODO: Email
+                catch (Exception e)
+                {
+                    Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        ExceptionHandler.ShowExceptionMessage(e);
+                    });
+                }
             }, "monitor-" + script.Identifier + "-" + timestamp).Start();
         }
 
