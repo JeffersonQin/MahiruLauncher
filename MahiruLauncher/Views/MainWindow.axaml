@@ -73,9 +73,8 @@
 			</ScrollViewer>
 		</TabItem>
 		<TabItem Header="Settings" VerticalContentAlignment="Center">
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Square : " HorizontalAlignment="Left" VerticalAlignment="Center"/>
-				<Rectangle Fill="Blue" Width="63" Height="41"/>
+			<StackPanel>
+				<CheckBox FontSize="20" Margin="0 0 0 20" IsChecked="{Binding Path=Topmost, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Mode=TwoWay}">Stick on Top</CheckBox>
 			</StackPanel>
 		</TabItem>
     </TabControl>
