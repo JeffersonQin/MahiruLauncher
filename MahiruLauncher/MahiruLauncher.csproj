@@ -15,10 +15,26 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.10" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
+    <PackageReference Include="EmbedIO" Version="3.4.3" />
     <PackageReference Include="MessageBox.Avalonia" Version="1.7.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MahiruLauncher.Manager\MahiruLauncher.Manager.csproj" />
+    <ProjectReference Include="..\MahiruLauncher.DataModel\MahiruLauncher.DataModel.csproj" />
     <ProjectReference Include="..\MahiruLauncher.Mvvm\MahiruLauncher.Mvvm.csproj" />
+    <ProjectReference Include="..\MahiruLauncher.Utils\MahiruLauncher.Utils.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 </Project>
