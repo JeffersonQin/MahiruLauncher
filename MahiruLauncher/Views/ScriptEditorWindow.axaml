@@ -19,8 +19,9 @@
         <StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock FontSize="30" Text="Edit script  "/>
-                <TextBlock FontSize="20" Foreground="Gray" VerticalAlignment="Center" Text="{Binding Identifier}"/>
+                <Button FontSize="25" Click="ExportScript">Export</Button>
             </StackPanel>
+            <TextBlock FontSize="20" Foreground="Gray" Text="{Binding Identifier}"/>
             <StackPanel Margin="20">
                 <TextBlock FontSize="20" Margin="0 0 0 10">Name</TextBlock>
                 <TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding Name, Mode=TwoWay}"/>

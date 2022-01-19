@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using MahiruLauncher.DataModel;
+using MahiruLauncher.Utils;
 
 namespace MahiruLauncher.Views
 {
@@ -48,6 +51,32 @@ namespace MahiruLauncher.Views
         private void RedirectStreamChecked(object? sender, RoutedEventArgs e)
         {
             (DataContext as Script)!.UseShellExecute = false;
+        }
+
+        private async void ExportScript(object? sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dialog = new SaveFileDialog();
+                dialog.DefaultExtension = ".xml";
+                dialog.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "xml" }, Name = "XML" });
+                dialog.Title = "Export Script";
+                dialog.InitialFileName = "script.xml";
+                var fileName = await dialog.ShowAsync(this);
+                if (fileName != null)
+                    try
+                    {
+                        File.WriteAllText(fileName, (DataContext as Script).Serialize());
+                    }
+                    catch (Exception eex)
+                    {
+                        ExceptionHandler.ShowExceptionMessage(eex);
+                    }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.ShowExceptionMessage(ex);
+            }
         }
     }
 }

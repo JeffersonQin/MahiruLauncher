@@ -23,11 +23,11 @@
 		<TabItem Header="Scripts" VerticalContentAlignment="Center">
 			<ScrollViewer>
 				<StackPanel>
-					<Grid Margin="10" ColumnDefinitions="*,Auto,Auto">
-						<TextBlock Grid.Column="0" FontSize="35">User Scripts</TextBlock>
-						<Button Grid.Column="1" Content=" + " FontSize="20" Click="NewScriptHandler" Margin="5"/>
-						<Button Grid.Column="2" Content="Save Changes" FontSize="20" Click="SaveScripts" Margin="5"/>
-					</Grid>
+					<StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
+						<Button Content=" + " FontSize="20" Click="NewScriptHandler" Margin="5"/>
+						<Button Content="Import" FontSize="20" Click="ImportScript" Margin="5"/>
+						<Button Content="Save Changes" FontSize="20" Click="SaveScripts" Margin="5"/>
+					</StackPanel>
 					<ItemsControl Margin="10" Items="{Binding ScriptManager.Scripts}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>

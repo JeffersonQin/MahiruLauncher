@@ -98,7 +98,7 @@ Task 可以由 Script 点击 Run 直接新建并运行，也可以由发送 POST
 
 - [x] Drag & drop to run
 - [x] Email notification when failed
-- [ ] Import xml file as script
+- [x] Import & export xml files
 - [x] Settings
 - [ ] Scheduler (cron)
 - [ ] Python library

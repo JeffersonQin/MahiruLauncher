@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Avalonia;
@@ -184,6 +185,25 @@ namespace MahiruLauncher.Views
         private void SetTopmost(object? sender, RoutedEventArgs e)
         {
             Topmost = Properties.Settings.Default.Topmost;
+        }
+
+        private async void ImportScript(object? sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dialog = new OpenFileDialog();
+                dialog.Title = "Import Script";
+                dialog.AllowMultiple = true;
+                dialog.Filters.Add(new FileDialogFilter() { Extensions = new List<string> { "xml" }, Name = "XML" });
+                var files = await dialog.ShowAsync(this);
+                if (files != null)
+                    foreach (var file in files)
+                        ScriptManager.AddScript(Serializer.Load<Script>(file));
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.ShowExceptionMessage(ex);
+            }
         }
     }
 }
