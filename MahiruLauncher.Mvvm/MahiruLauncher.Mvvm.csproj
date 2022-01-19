@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="DotNet.Bundle" Version="0.9.13" />
+  </ItemGroup>
+
 </Project>

@@ -8,4 +8,8 @@
     <ProjectReference Include="..\MahiruLauncher.Mvvm\MahiruLauncher.Mvvm.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="DotNet.Bundle" Version="0.9.13" />
+  </ItemGroup>
+
 </Project>
