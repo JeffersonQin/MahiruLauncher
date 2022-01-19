@@ -119,6 +119,17 @@ namespace MahiruLauncher.DataModel
             set => SetProperty(ref _workingDirectory, value);
         }
 
+        private string _dragAndDropField;
+
+        /// <summary>
+        /// Determine the field which is used for drag and drop.
+        /// </summary>
+        public string DragAndDropField
+        {
+            get => _dragAndDropField;
+            set => SetProperty(ref _dragAndDropField, value);
+        }
+
         public Script(string identifier)
         {
             Identifier = identifier;
