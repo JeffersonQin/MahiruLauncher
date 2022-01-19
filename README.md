@@ -97,9 +97,9 @@ Task 可以由 Script 点击 Run 直接新建并运行，也可以由发送 POST
 ## TODO
 
 - [x] Drag & drop to run
-- [ ] Email notification when failed
+- [x] Email notification when failed
 - [ ] Import xml file as script
-- [ ] Settings
+- [x] Settings
 - [ ] Scheduler (cron)
 - [ ] Python library
 - [ ] Python script template
