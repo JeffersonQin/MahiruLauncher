@@ -31,7 +31,9 @@ namespace MahiruLauncher.Manager
 
         public static Script GetScript(string identifier)
         {
-            return GetInstance().Scripts.FirstOrDefault(script => script.Identifier == identifier);
+            var ret = GetInstance().Scripts.FirstOrDefault(script => script.Identifier == identifier);
+            if (ret == null) throw new Exception("Script not found with identifier: " + identifier);
+            return ret;
         }
 
         public static void AddScript(Script script)
