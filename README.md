@@ -86,6 +86,14 @@ Task 可以由 Script 点击 Run 直接新建并运行，也可以由发送 POST
   }
   ```
 
+## Build
+
+* Windows: 正常 build 即可
+* OSX:
+  ```bash
+  ./build-app.sh <short-version-string>
+  ```
+
 ## Screenshots
 
 <div align="center">
