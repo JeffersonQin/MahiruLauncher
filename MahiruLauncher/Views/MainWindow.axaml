@@ -5,6 +5,7 @@
         xmlns:vm="clr-namespace:MahiruLauncher.ViewModels"
         xmlns:cvt="clr-namespace:MahiruLauncher.Converter"
         xmlns:views="clr-namespace:MahiruLauncher.Views"
+        xmlns:p="clr-namespace:MahiruLauncher.Properties"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="1000"
         Width="500" Height="1000"
         x:Class="MahiruLauncher.Views.MainWindow"
@@ -73,9 +74,30 @@
 			</ScrollViewer>
 		</TabItem>
 		<TabItem Header="Settings" VerticalContentAlignment="Center">
-			<StackPanel>
-				<CheckBox FontSize="20" Margin="0 0 0 20" IsChecked="{Binding Path=Topmost, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Mode=TwoWay}">Stick on Top</CheckBox>
-			</StackPanel>
+			<ScrollViewer Margin="10">
+				<StackPanel Margin="10">
+					<TextBlock FontSize="16" Margin="0 0 0 10" Foreground="IndianRed">Note: Some settings won't take effect before restart.</TextBlock>
+					<CheckBox FontSize="20" Margin="0 0 0 20" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=Topmost, Mode=TwoWay}" Click="SetTopmost">Stick on Top</CheckBox>
+					<TextBlock FontSize="20" Margin="0 0 0 10">Server Port</TextBlock>
+					<TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding Source={x:Static p:Settings.Default}, Path=MahiruServerPort, Mode=TwoWay}"/>
+					<CheckBox FontSize="20" Margin="0 0 0 20" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=EmailNotification, Mode=TwoWay}">Email Notification When Task Failed</CheckBox>
+					<TextBlock FontSize="20" Margin="0 0 0 10">Email Address</TextBlock>
+					<TextBox FontSize="16" Margin="0 0 0 20" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=EmailNotification, Mode=TwoWay}" Text="{Binding Source={x:Static p:Settings.Default}, Path=EmailAddress, Mode=TwoWay}"/>
+					<TextBlock FontSize="20" Margin="0 0 0 10">Email Username</TextBlock>
+					<TextBox FontSize="16" Margin="0 0 0 20" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=EmailNotification, Mode=TwoWay}" Text="{Binding Source={x:Static p:Settings.Default}, Path=SmtpUsername, Mode=TwoWay}"/>
+					<TextBlock FontSize="20" Margin="0 0 0 10">Email Password</TextBlock>
+					<TextBox FontSize="16" Margin="0 0 0 20" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=EmailNotification, Mode=TwoWay}" Text="{Binding Source={x:Static p:Settings.Default}, Path=SmtpPassword, Mode=TwoWay}"/>
+					<TextBlock FontSize="20" Margin="0 0 0 10">SMTP Host</TextBlock>
+					<TextBox FontSize="16" Margin="0 0 0 20" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=EmailNotification, Mode=TwoWay}" Text="{Binding Source={x:Static p:Settings.Default}, Path=SmtpHost, Mode=TwoWay}"/>
+					<TextBlock FontSize="20" Margin="0 0 0 10">SMTP Port</TextBlock>
+					<TextBox FontSize="16" Margin="0 0 0 20" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=EmailNotification, Mode=TwoWay}" Text="{Binding Source={x:Static p:Settings.Default}, Path=SmtpPort, Mode=TwoWay}"/>
+					<CheckBox FontSize="20" Margin="0 0 0 20" IsEnabled="{Binding Source={x:Static p:Settings.Default}, Path=EmailNotification, Mode=TwoWay}" IsChecked="{Binding Source={x:Static p:Settings.Default}, Path=SmtpEnableSsl, Mode=TwoWay}">Enable SSL</CheckBox>
+
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+						<Button FontSize="18" HorizontalAlignment="Right" Margin="10 10 10 20" Click="SaveSettings">Save Settings</Button>
+					</StackPanel>
+				</StackPanel>
+			</ScrollViewer>
 		</TabItem>
     </TabControl>
 </Window>
