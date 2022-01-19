@@ -6,6 +6,7 @@
         <entry key="MahiruLauncher/App.axaml" value="MahiruLauncher/MahiruLauncher.csproj" />
         <entry key="MahiruLauncher/Views/MainWindow.axaml" value="MahiruLauncher/MahiruLauncher.csproj" />
         <entry key="MahiruLauncher/Views/NewScriptWindow.axaml" value="MahiruLauncher/MahiruLauncher.csproj" />
+        <entry key="MahiruLauncher/Views/ScriptControl.axaml" value="MahiruLauncher/MahiruLauncher.csproj" />
         <entry key="MahiruLauncher/Views/ScriptEditorWindow.axaml" value="MahiruLauncher/MahiruLauncher.csproj" />
       </map>
     </option>

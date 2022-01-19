@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:MahiruLauncher.ViewModels"
         xmlns:cvt="clr-namespace:MahiruLauncher.Converter"
+        xmlns:views="clr-namespace:MahiruLauncher.Views"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="1000"
         Width="500" Height="1000"
         x:Class="MahiruLauncher.Views.MainWindow"
@@ -34,20 +35,7 @@
 						</ItemsControl.ItemsPanel>
 						<ItemsControl.ItemTemplate>
 							<DataTemplate>
-								<Border CornerRadius="5" BorderBrush="Gray" Background="LightGray" Margin="10">
-									<Grid Margin="10" ColumnDefinitions="4*,1*">
-										<StackPanel Grid.Column="0" VerticalAlignment="Center">
-											<TextBlock Text="{Binding Name}" FontSize="30"/>
-											<TextBlock Text="{Binding Identifier}" FontSize="20" Foreground="Gray"/>
-											<TextBlock Text="{Binding Description}" FontSize="20" TextWrapping="Wrap"/>
-										</StackPanel>
-										<StackPanel Grid.Column="1" VerticalAlignment="Center">
-											<Button Margin="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="RunScript">Run</Button>
-											<Button Margin="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="EditScript">Edit</Button>
-											<Button Margin="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Foreground="Red" Click="DeleteScript">Delete</Button>
-										</StackPanel>
-									</Grid>
-								</Border>
+								<views:ScriptControl/>
 							</DataTemplate>
 						</ItemsControl.ItemTemplate>
 					</ItemsControl>

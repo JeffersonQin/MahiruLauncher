@@ -1,0 +1,22 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dm="clr-namespace:MahiruLauncher.DataModel;assembly=MahiruLauncher.DataModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MahiruLauncher.Views.ScriptControl">
+    <Border CornerRadius="5" BorderBrush="Gray" Background="LightGray" Margin="10" DragDrop.AllowDrop="True">
+        <Grid Margin="10" ColumnDefinitions="4*,1*">
+            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Name}" FontSize="30"/>
+                <TextBlock Text="{Binding Identifier}" FontSize="20" Foreground="Gray"/>
+                <TextBlock Text="{Binding Description}" FontSize="20" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <Button Margin="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="RunScript">Run</Button>
+                <Button Margin="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Click="EditScript">Edit</Button>
+                <Button Margin="5" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Foreground="Red" Click="DeleteScript">Delete</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

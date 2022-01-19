@@ -73,8 +73,10 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button HorizontalAlignment="Right" Margin="10" Click="AddArgument">Add Argument</Button>
+                    <Button HorizontalAlignment="Right" Margin="10 10 10 20" Click="AddArgument">Add Argument</Button>
                 </StackPanel>
+                <TextBlock FontSize="20" Margin="0 0 0 10">Drag and Drop (Argument Name)</TextBlock>
+                <TextBox FontSize="16" Margin="0 0 0 20" Text="{Binding DragAndDropField, Mode=TwoWay}"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using Avalonia;
@@ -85,38 +84,6 @@ namespace MahiruLauncher.Views
         private void NewScriptHandler(object? sender, RoutedEventArgs e)
         {
             var window = new NewScriptWindow();
-            window.ShowDialog(this);
-        }
-
-        private void RunScript(object? sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var button = sender as Button;
-                var script = button?.DataContext as DataModel.Script;
-                ScriptTaskManager.AddAndStartScriptTask(new ScriptTask(script));
-            }
-            catch (Exception ex)
-            {
-                var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                        ButtonDefinitions = ButtonEnum.Ok,
-                        ContentTitle = "Error",
-                        FontFamily = "Microsoft YaHei,Simsun,苹方-简,宋体-简",
-                        ContentMessage = ex.Message + "\n" + ex.StackTrace
-                    });
-                msBoxStandardWindow.Show();
-            }
-        }
-
-        private void EditScript(object? sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            var script = button?.DataContext as DataModel.Script;
-            var window = new ScriptEditorWindow()
-            {
-                DataContext = script
-            };
             window.ShowDialog(this);
         }
 
@@ -223,27 +190,6 @@ namespace MahiruLauncher.Views
             {
                 var scriptsPath = Path.Join(DirectoryUtil.GetApplicationDirectory(), "scripts.xml");
                 File.WriteAllText(scriptsPath, ScriptManager.GetInstance().Serialize());
-            }
-            catch (Exception ex)
-            {
-                var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow(new MessageBoxStandardParams{
-                        ButtonDefinitions = ButtonEnum.Ok,
-                        ContentTitle = "Error",
-                        FontFamily = "Microsoft YaHei,Simsun,苹方-简,宋体-简",
-                        ContentMessage = ex.Message + "\n" + ex.StackTrace
-                    });
-                msBoxStandardWindow.Show();
-            }
-        }
-
-        private void DeleteScript(object? sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var button = sender as Button;
-                var script = button?.DataContext as Script;
-                ScriptManager.GetInstance().Scripts.Remove(script);
             }
             catch (Exception ex)
             {
