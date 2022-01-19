@@ -26,10 +26,6 @@ namespace MahiruLauncher.Views
                 // Start Server
                 MahiruServer.StartServer();
 
-                // Load scripts
-                var scriptsPath = Path.Join(DirectoryUtil.GetApplicationDirectory(), "scripts.xml");
-                ScriptManager.GetInstance().Scripts = Serializer.Load<ScriptManager>(scriptsPath).Scripts;
-
                 // Start auto-start tasks
                 foreach (var script in ScriptManager.GetInstance().Scripts)
                     if (script.StartWhenAppStarts)
@@ -62,6 +58,17 @@ namespace MahiruLauncher.Views
 
                 // Topmost setting
                 Topmost = Properties.Settings.Default.Topmost;
+
+                try
+                {
+                    // Load scripts
+                    var scriptsPath = Path.Join(DirectoryUtil.GetApplicationDirectory(), "scripts.xml");
+                    ScriptManager.GetInstance().Scripts = Serializer.Load<ScriptManager>(scriptsPath).Scripts;
+                }
+                catch (Exception eex)
+                {
+                    ExceptionHandler.ShowExceptionMessage(eex);
+                }
             }
             catch (Exception ex)
             {
