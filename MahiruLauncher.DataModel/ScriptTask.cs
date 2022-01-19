@@ -26,9 +26,9 @@ namespace MahiruLauncher.DataModel
             set => SetProperty(ref _startTime, value);
         }
         
-        private int _endTime;
+        private long _endTime;
         
-        public int EndTime
+        public long EndTime
         {
             get => _endTime;
             set => SetProperty(ref _endTime, value);
