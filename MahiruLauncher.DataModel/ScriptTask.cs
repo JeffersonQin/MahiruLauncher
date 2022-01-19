@@ -8,7 +8,7 @@ namespace MahiruLauncher.DataModel
 {
     public class ScriptTask : NotifyObject
     {
-        public string TaskIdentifier { get; } = Guid.NewGuid().ToString();
+        public string TaskIdentifier { get; private set; }
 
         private ScriptStatus _status = ScriptStatus.Waiting;
 
@@ -68,13 +68,26 @@ namespace MahiruLauncher.DataModel
 
         public readonly Process Process = new Process();
 
-        public ScriptTask(Script script, IList<ScriptArgument> scriptArguments = null)
+        public ScriptTask(Script script, IList<ScriptArgument> customArguments = null)
         {
+            TaskIdentifier = Guid.NewGuid().ToString();
             ScriptIdentifier = script.Identifier;
-            if (scriptArguments != null)
-                foreach (var argument in scriptArguments)
-                    ScriptArguments.Add(argument);
-            else ScriptArguments = script.DefaultArguments;
+            foreach (var argument in script.DefaultArguments)
+                ScriptArguments.Add(new ScriptArgument(argument.Name, argument.Value));
+            if (customArguments == null) return;
+            foreach (var customArgument in customArguments)
+            {
+                var successFlag = false;
+                foreach (var argument in ScriptArguments)
+                {
+                    if (argument.Name != customArgument.Name) continue;
+                    argument.Value = customArgument.Value;
+                    successFlag = true;
+                    break;
+                }
+                if (!successFlag)
+                    throw new Exception("Argument not found: " + customArgument.Name);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EmbedIO;
 using EmbedIO.Routing;
 using EmbedIO.WebApi;
@@ -69,12 +70,10 @@ namespace MahiruLauncher.Manager
             {
                 var script = ScriptManager.GetScript(identifier);
                 var args = JObject.Parse(arguments);
-                var task = new ScriptTask(script);
+                var customArgs = new List<ScriptArgument>();
                 foreach (var (key, value) in args)
-                    foreach (var pair in task.ScriptArguments)
-                        if (pair.Name == key)
-                            pair.Value = value.ToString();
-                ScriptTaskManager.AddAndStartScriptTask(task);
+                    customArgs.Add(new ScriptArgument(key, value.ToString()));
+                ScriptTaskManager.AddAndStartScriptTask(new ScriptTask(script, customArgs));
                 return new Response("success", "");
             }
             catch (Exception e)
