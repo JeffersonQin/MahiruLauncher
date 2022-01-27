@@ -81,11 +81,12 @@ namespace MahiruLauncher.Manager
             if (script == null)
                 throw new Exception("Script not found with identifier: " + scriptTask.ScriptIdentifier);
             var timestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
-            scriptTask.Process.StartInfo.FileName = script.ProcessName;
             scriptTask.Process.StartInfo.UseShellExecute = script.UseShellExecute;
             scriptTask.Process.StartInfo.CreateNoWindow = script.CreateNoWindow;
             scriptTask.Process.StartInfo.WorkingDirectory = DirectoryUtil.GetRealWorkingDirectory(script.WorkingDirectory,
                 Properties.Settings.Default.RelativeWorkingDirectory);
+            scriptTask.Process.StartInfo.FileName = script.ProcessName.StartsWith("*") ? 
+                Path.Join(scriptTask.Process.StartInfo.WorkingDirectory, script.ProcessName[1..]) : script.ProcessName;
             foreach (var argument in scriptTask.ScriptArguments)
                 if (argument.Name == "$[SCHEDULE_UUID]")
                     scriptTask.Process.StartInfo.ArgumentList.Add(scriptTask.TaskIdentifier);

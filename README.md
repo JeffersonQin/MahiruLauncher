@@ -18,7 +18,7 @@ Task 可以由 Script 点击 Run 直接新建并运行，也可以由发送 POST
 * Name: 脚本名称
 * Identifier: 脚本 ID
 * Description: 脚本简介
-* Process Name (File Name): 进程名 / (二进制)文件路径
+* Process Name (File Name): 进程名 / (二进制)文件路径。如果是 Working Directory 的相对路径，在路径前加上 `*` 即可。例如: `*.\venv\Scripts\python.exe`。
 * Working Directory: 工作目录，相对目录可以在 settings 里的 Relative Working Directory 里设置，也可以直接填写绝对目录
 * Redirect Stream to File (启用本选项则无法 Use Shell to Execute): 是否重定向 stdout 和 stderr 到文件
 * Use Shell Execute: 使用 Shell 执行
