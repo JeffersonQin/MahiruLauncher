@@ -141,7 +141,7 @@ namespace MahiruLauncher.Manager
                     var mySmtpClient = new SmtpClient(Properties.Settings.Default.SmtpHost);
                     mySmtpClient.Port = Properties.Settings.Default.SmtpPort;
 
-                    // set smtp-client with basicAuthentication
+                    // set smtp-client with basic Authentication
                     mySmtpClient.EnableSsl = Properties.Settings.Default.SmtpEnableSsl;
                     mySmtpClient.UseDefaultCredentials = false;
                     System.Net.NetworkCredential basicAuthenticationInfo = new
@@ -149,7 +149,7 @@ namespace MahiruLauncher.Manager
                     mySmtpClient.Credentials = basicAuthenticationInfo;
                     mySmtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
 
-                    // add from,to mailaddresses
+                    // add from, to mail addresses
                     var mailAddress = new MailAddress(Properties.Settings.Default.EmailAddress);
                     var myMail = new MailMessage();
                     myMail.From = mailAddress;
