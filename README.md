@@ -109,7 +109,7 @@ Task 可以由 Script 点击 Run 直接新建并运行，也可以由发送 POST
 - [x] Import & export xml files
 - [x] Settings
 - [ ] Scheduler (cron)
-- [ ] Python library
+- [x] Python library
 - [ ] Python script template
 
 ## Technology Used
